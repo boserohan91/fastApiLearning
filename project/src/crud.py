@@ -22,10 +22,10 @@ def delete_blog_by_id(ses: Session, id: int):
     return
 
 def get_blog_by_author(ses: Session, author: str):
-    return ses.query(models.Blogs).filter(models.Blogs.author == author).all()
+    return ses.query(models.Blogs).filter(models.Blogs.user.has(models.Users.name==author)).all()
 
 def create_blog(ses: Session, blog: schemas.BlogCreate):
-    new_blog = models.Blogs(author=blog.author, title=blog.title, body=blog.body)
+    new_blog = models.Blogs(user_id=blog.user_id, title=blog.title, body=blog.body)
     ses.add(new_blog)
     ses.commit()
     ses.refresh(new_blog)

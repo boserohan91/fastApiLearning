@@ -1,25 +1,32 @@
 from pydantic import BaseModel
 
+class UserBase(BaseModel):
+    name: str
+    email: str
+
+    class Config:
+        orm_mode = True
+
+
 class BlogBase(BaseModel):
     title: str
-    author: str
     body: str
+
+    class Config:
+        orm_mode = True
+    
+class BlogShow(BlogBase):
+    user: UserBase
 
     class Config:
         orm_mode = True
 
 class BlogCreate(BlogBase):
+    user_id: int
     pass
 
-class Blog(BlogCreate):
+class Blog(BlogShow):
     id: int
-
-    class Config:
-        orm_mode = True
-
-class UserBase(BaseModel):
-    name: str
-    email: str
 
     class Config:
         orm_mode = True
