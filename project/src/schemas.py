@@ -36,3 +36,7 @@ class User(UserBase):
 
 class UserDB(User):
     id: int
+
+class Login(BaseModel):
+    username: str
+    password: str

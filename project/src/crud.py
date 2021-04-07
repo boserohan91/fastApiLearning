@@ -39,7 +39,7 @@ def create_user(ses: Session, user: schemas.User):
     return {f"{new_user.email} added to Users"}
 
 def get_user(ses: Session, email: str):
-    user = ses.query(models.Users).filter(models.Users.email == email).one()
+    user = ses.query(models.Users).filter(models.Users.email == email).first()
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Invalid User/User does not exist")
     else:
