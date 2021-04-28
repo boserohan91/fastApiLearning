@@ -4,3 +4,7 @@ sqlalchemy
 passlib
 python-jose
 python-multipart
+alembic
+python-dotenv
+psycopg2-binary
+requests

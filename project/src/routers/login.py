@@ -30,7 +30,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     except JWTError:
         raise credential_exception
     db = database.SessionLocal()
-    user = crud.get_user(email=token_data.username, ses=db)
+    user = await crud.get_user(email=token_data.username, ses=db)
     db.close()
     if user is None:
         raise credential_exception
@@ -50,8 +50,8 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 
 
 @router.post('', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.Token)
-def auth_to_get_token(auth_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(database.get_db)):
-    hashed_password = (crud.get_user(db, auth_data.username)).password
+async def auth_to_get_token(auth_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(database.get_db)):
+    hashed_password = (await crud.get_user(db, auth_data.username)).password
     if not pwd_context.verify(auth_data.password, hashed_password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail=f"Incorrect Credentials")
